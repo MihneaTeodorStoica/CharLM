@@ -1,0 +1,13 @@
+stages:
+  normalize:
+    cmd: python scripts/normalize.py data/raw data/interim
+    deps: [data/raw]
+    outs: [data/interim]
+  dedup:
+    cmd: python scripts/dedup.py data/interim data/processed
+    deps: [data/interim]
+    outs: [data/processed]
+  pack:
+    cmd: python scripts/pack.py data/processed data/out
+    deps: [data/processed]
+    outs: [data/out/train.bin, data/out/train.idx, data/out/val.bin, data/out/val.idx]

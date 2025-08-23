@@ -1,0 +1,30 @@
+name: perf-smoketest
+
+on: [workflow_dispatch]
+
+jobs:
+  perf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Forward perf
+        run: |
+          python - <<'PY'
+import time, torch
+from src.tinychar.model import TinyCharModel
+from src.tinychar.configs import TrainConfig
+cfg = TrainConfig(d_model=64, n_layer=2, n_head=2, n_kv_head=1, seq_len=32)
+model = TinyCharModel(cfg)
+x = torch.randint(0, cfg.vocab_size, (1, cfg.seq_len))
+start = time.time()
+model(x)
+elapsed = time.time() - start
+print('tokens/s', cfg.seq_len / elapsed)
+PY
