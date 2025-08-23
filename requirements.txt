@@ -1,0 +1,6 @@
+torch>=2.3
+numpy
+tqdm
+pyyaml
+wandb
+dvc
