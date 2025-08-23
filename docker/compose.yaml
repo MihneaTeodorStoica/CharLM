@@ -1,0 +1,15 @@
+services:
+  train:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.dev
+    volumes:
+      - ..:/workspace
+    working_dir: /workspace
+    shm_size: 2g
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    command: tail -f /dev/null
