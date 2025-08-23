@@ -20,7 +20,3 @@ make sample PROMPT="Hello"  # generate text
 If no DVC remote is configured, `make data-pull` downloads a small
 public-domain sample (Tiny Shakespeare) and prepares memmap binaries in
 `data/out/` so the model can be exercised without external datasets.
-
-## Troubleshooting
-- Ensure PyTorch \>=2.3 with CUDA 12.4 for GPU acceleration.
-- For CPU-only testing use wheels from `--index-url https://download.pytorch.org/whl/cpu`.

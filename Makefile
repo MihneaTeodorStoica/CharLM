@@ -1,4 +1,4 @@
-.RECIPEPREFIX := >
+RECIPEPREFIX := >
 .PHONY: setup data-pull data-push train eval sample export-int8 lint test docker-up
 
 PYTHON=python
