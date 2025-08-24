@@ -19,7 +19,7 @@ def main() -> None:
     model = TinyCharModel(cfg)
     model.load_state_dict(ckpt["model"])
     model.eval()
-    ids = [ord(c) for c in args.prompt.encode("utf-8", errors="ignore")]
+    ids = list(args.prompt.encode("utf-8", errors="ignore"))
     out = model.generate(ids, max_new_tokens=args.max_new, temperature=args.temperature, top_k=args.top_k or None)
     text = bytes(out).decode("utf-8", errors="ignore")
     print(text)
