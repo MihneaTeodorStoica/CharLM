@@ -1,4 +1,5 @@
 import math
+import os
 from dataclasses import asdict
 
 import torch
@@ -36,6 +37,9 @@ def save_checkpoint(path: str, model: torch.nn.Module, optimizer, cfg, step: int
         "step": step,
         "best": best,
     }
+    directory = os.path.dirname(path)
+    if directory:
+        os.makedirs(directory, exist_ok=True)
     torch.save(obj, path)
 
 
