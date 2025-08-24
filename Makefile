@@ -13,13 +13,13 @@ data-push:
 > scripts/data_push.sh data/out
 
 train:
-> $(PYTHON) -m src.train --config configs/small-50M.yaml
+> PYTHONPATH=$(pwd)/src python -m src.train --config configs/small-50M.yaml
 
 eval:
-> $(PYTHON) -m src.eval_bpb --config configs/small-50M.yaml
+> python -m src.eval_bpb --config configs/small-50M.yaml
 
 sample:
-> $(PYTHON) -m src.generate --checkpoint checkpoints/last.pt --prompt "$(PROMPT)" --max_new 100
+> python -m src.generate --checkpoint checkpoints/last.pt --prompt "$(PROMPT)" --max_new 100
 
 export-int8:
 > scripts/export_int8.sh --checkpoint checkpoints/best.pt --out checkpoints/model-int8.pt
