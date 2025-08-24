@@ -1,0 +1,7 @@
+vocab_size: 256
+d_model: 768
+n_layer: 16
+n_head: 12
+n_kv_head: 4
+seq_len: 2048
+dropout: 0.0
