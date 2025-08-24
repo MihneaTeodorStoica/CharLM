@@ -13,7 +13,7 @@ data-push:
 > scripts/data_push.sh data/out
 
 train:
-> PYTHONPATH=$(pwd)/src python -m src.train --config configs/small-50M.yaml
+> PYTHONPATH=$(CURDIR)/src $(PYTHON) -m src.train --config configs/small-50M.yaml
 
 eval:
 > python -m src.eval_bpb --config configs/small-50M.yaml
