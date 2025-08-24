@@ -15,6 +15,7 @@ Lightweight character/byte-level language model implemented in PyTorch.
 ```bash
 make data-pull        # obtain training data via DVC
 make train            # train default 50M model
+make train-micro      # quick training run (<5 min)
 make eval             # compute validation bpb
 make sample PROMPT="Hello"  # generate text
 ```
