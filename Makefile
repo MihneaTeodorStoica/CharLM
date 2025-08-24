@@ -19,10 +19,10 @@ train-micro:
 > PYTHONPATH=$(CURDIR)/src $(PYTHON) -m src.train --config configs/micro.yaml
 
 eval:
-> python -m src.eval_bpb --config configs/small-50M.yaml
+> PYTHONPATH=$(CURDIR)/src $(PYTHON) -m src.eval_bpb --config configs/small-50M.yaml
 
 sample:
-> python -m src.generate --checkpoint checkpoints/last.pt --prompt "$(PROMPT)" --max_new 100
+> PYTHONPATH=$(CURDIR)/src $(PYTHON) -m src.generate --checkpoint checkpoints/last.pt --prompt "$(PROMPT)" --max_new 100
 
 export-int8:
 > scripts/export_int8.sh --checkpoint checkpoints/best.pt --out checkpoints/model-int8.pt
