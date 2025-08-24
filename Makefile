@@ -1,5 +1,5 @@
 .RECIPEPREFIX := >
-.PHONY: setup data-pull data-push train eval sample export-int8 lint test docker-up
+.PHONY: setup data-pull data-push train train-micro eval sample export-int8 lint test docker-up
 
 PYTHON=python
 
@@ -14,6 +14,9 @@ data-push:
 
 train:
 > PYTHONPATH=$(CURDIR)/src $(PYTHON) -m src.train --config configs/small-50M.yaml
+
+train-micro:
+> PYTHONPATH=$(CURDIR)/src $(PYTHON) -m src.train --config configs/micro.yaml
 
 eval:
 > python -m src.eval_bpb --config configs/small-50M.yaml
