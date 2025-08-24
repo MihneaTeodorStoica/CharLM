@@ -179,8 +179,12 @@ class TinyCharModel(nn.Module):
         self.eval()
         device = next(self.parameters()).device
         idx = torch.tensor(prompt, dtype=torch.long, device=device)[None, :]
-        logits, _, cache = self(idx)
         out = idx
+        if idx.size(1) == 0:
+            logits = torch.zeros((1, 1, self.cfg.vocab_size), device=device)
+            cache = [None] * len(self.blocks)
+        else:
+            logits, _, cache = self(idx)
         for _ in range(max_new_tokens):
             logits = logits[:, -1, :] / temperature
             if top_k is not None and top_k > 0:
