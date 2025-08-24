@@ -2,6 +2,7 @@
 .PHONY: setup data-pull data-push train train-micro eval sample export-int8 lint test docker-up
 
 PYTHON=python
+CHECKPOINT ?= checkpoints/last.pt
 
 setup:
 > pip install -r requirements.txt
@@ -13,13 +14,13 @@ data-push:
 > scripts/data_push.sh data/out
 
 train:
-> PYTHONPATH=$(CURDIR)/src $(PYTHON) -m src.train --config configs/small-50M.yaml
+> PYTHONPATH=$(CURDIR)/src $(PYTHON) -m src.train --config configs/small-50M.yaml $(if $(CKPT),--checkpoint $(CKPT),)
 
 train-micro:
-> PYTHONPATH=$(CURDIR)/src $(PYTHON) -m src.train --config configs/micro.yaml
+> PYTHONPATH=$(CURDIR)/src $(PYTHON) -m src.train --config configs/micro.yaml $(if $(CKPT),--checkpoint $(CKPT),)
 
 eval:
-> PYTHONPATH=$(CURDIR)/src $(PYTHON) -m src.eval_bpb --config configs/small-50M.yaml
+> PYTHONPATH=$(CURDIR)/src $(PYTHON) -m src.eval_bpb --checkpoint $(CHECKPOINT)
 
 sample:
 > PYTHONPATH=$(CURDIR)/src $(PYTHON) -m src.generate --checkpoint checkpoints/last.pt --prompt "$(PROMPT)" --max_new 100
