@@ -25,11 +25,14 @@ def load_config(path: str | None) -> TrainConfig:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Train TinyChar")
     parser.add_argument("--config", type=str, default=None)
+    parser.add_argument("--checkpoint", type=str, default=None)
     parser.add_argument("--data", type=str, default="data/out/train.bin")
     parser.add_argument("--index", type=str, default="data/out/train.idx")
     args = parser.parse_args()
 
     cfg = load_config(args.config)
+    if args.checkpoint:
+        cfg.ckpt_path = args.checkpoint
     set_seed(cfg.seed)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -41,14 +44,16 @@ def main() -> None:
     optimizer = setup_optimizer(model, cfg)
     scaler = GradScaler(enabled=dtype == torch.float16)
 
+    start_step = 0
     if cfg.ckpt_path and os.path.exists(cfg.ckpt_path):
-        load_checkpoint(cfg.ckpt_path, model, optimizer)
+        ckpt = load_checkpoint(cfg.ckpt_path, model, optimizer)
+        start_step = ckpt.get("step", 0)
 
     loader = create_dataloader(args.data, args.index, cfg.seq_len, cfg.micro_bsz)
     loader_iter = iter(loader)
     grad_accum = cfg.batch_size_tokens // (cfg.micro_bsz * cfg.seq_len)
 
-    for step in tqdm(range(cfg.max_steps), dynamic_ncols=True):
+    for step in tqdm(range(start_step, cfg.max_steps), dynamic_ncols=True):
         lr = cosine_lr(step, cfg)
         for pg in optimizer.param_groups:
             pg["lr"] = lr
