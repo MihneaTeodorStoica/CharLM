@@ -1,7 +1,29 @@
-vocab_size: 256
-d_model: 768
-n_layer: 16
-n_head: 12
-n_kv_head: 4
-seq_len: 2048
-dropout: 0.0
+model:
+  vocab_size: 256
+  d_model: 768
+  n_layer: 16
+  n_head: 12
+  n_kv_head: 4
+  seq_len: 2048
+  dropout: 0.1
+optimizer:
+  lr: 3.0e-4
+  weight_decay: 0.1
+scheduler:
+  warmup_steps: 4000
+  max_steps: 400000
+  min_lr: 1.0e-5
+batch_size_tokens: 2097152
+micro_batch_size: 16
+precision: auto
+grad_clip: 1.0
+compile: false
+seed: 0
+logging:
+  log_interval: 100
+checkpoint:
+  out_dir: checkpoints
+  save_interval: 2000
+  keep_last: 5
+eval_interval: 4000
+eval_batches: 32
